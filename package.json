@@ -6,9 +6,12 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "eslint-config-airbnb": "19.0.4",
+    "prop-types": "15.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "styled-components": "5.3.5",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -18,10 +21,39 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "eslint-config-airbnb"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "jsx-a11y/label-has-associated-control": [ 2, {
+        "assert": "either"
+      }]
+    }
   },
   "browserslist": {
     "production": [
@@ -34,5 +66,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "eslint": "8.13.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-react": "^7.29.4"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/cce932/org-repo-list.git",
+  "author": "dena chen",
+  "license": "MIT"
 }
