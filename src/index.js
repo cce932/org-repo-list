@@ -1,14 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import theme from './styled/theme';
+
+const root = document.getElementById('root');
+
+const GlobalStyle = createGlobalStyle`
+  body { 
+    font-family: 'Roboto Mono', monospace;
+    color: ${(props) => props.theme.color.secondary};
+    background-color: ${(prop) => prop.theme.color.bg};
+  }
+`;
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <GlobalStyle />
+  </ThemeProvider>,
+  root,
 );
 
 // If you want to start measuring performance in your app, pass a function
