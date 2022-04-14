@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const useInfiniteScroll = (fetchData, loadingState) => {
+const useInfiniteScroll = (fetchData, setLoading) => {
   const [isInitialized, setInitialized] = useState(false);
-  const [isLoading, setLoading] = loadingState;
+  const [isFetching, setFetching] = useState(false);
   const [isFinished, setFinished] = useState(false);
   const [page, setPage] = useState(2);
 
@@ -10,7 +10,7 @@ const useInfiniteScroll = (fetchData, loadingState) => {
     if (window.innerHeight + document.documentElement.scrollTop
       < (document.documentElement.offsetHeight - 120)) return;
 
-    if (!isFinished) setLoading(true);
+    if (!isFinished) setFetching(true);
   };
 
   useEffect(() => {
@@ -20,8 +20,9 @@ const useInfiniteScroll = (fetchData, loadingState) => {
   }, [isFinished]);
 
   useEffect(() => {
-    if (!isLoading || isFinished || !isInitialized) return;
+    if (!isFetching || isFinished || !isInitialized) return;
 
+    setLoading(true);
     fetchData()(page).then((data) => {
       if (data.length < 30) {
         setFinished(true);
@@ -29,8 +30,9 @@ const useInfiniteScroll = (fetchData, loadingState) => {
         setPage((prev) => prev + 1);
       }
       setLoading(false);
+      setFetching(false);
     });
-  }, [isLoading]);
+  }, [isFetching]);
 
   const reset = () => {
     setPage(2);
