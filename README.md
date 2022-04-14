@@ -14,3 +14,6 @@
 
 1. `yarn install`
 2. `yarn start`
+
+## Eslint
+If you encounter eslint format error when running the DEV environment, you can add `ESLINT_NO_DEV_ERRORS=true` into `.env`.
