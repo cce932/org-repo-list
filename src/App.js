@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Filters from './components/Filters';
 import Repo from './components/Repo';
 import Spinner from './components/Spinner';
-import useFilters from './hooks/useFilters';
+import { DIRECTION, SORT } from './constants/filter';
 import useInfiniteScroll from './hooks/useInfiniteScroll';
 
 const Wrapper = styled.div`
@@ -20,7 +20,12 @@ const Wrapper = styled.div`
 
 function App() {
   const [repos, setRepos] = useState([]);
-  const loadingState = useState(false);
+  const [filters, setFilters] = useState({
+    type: 'all',
+    sort: 'created',
+    direction: 'desc',
+  });
+  const loadingState = useState(true);
   const [isLoading, setLoading] = loadingState;
 
   const fetchData = (filtersParam, page) => fetch(`https://api.github.com/orgs/facebook/repos?${
@@ -43,11 +48,6 @@ function App() {
       });
   };
 
-  const {
-    setInitialized: setInitializedInFilter,
-    filters, setFilters,
-  } = useFilters(setDataToRepos);
-
   const appendDataToRepos = (filtersParam = filters) => (page) => fetchData(
     filtersParam,
     page,
@@ -58,22 +58,32 @@ function App() {
     });
 
   const {
-    setInitialized: setInitializedInIS,
-    reset: resetIS,
-  } = useInfiniteScroll(appendDataToRepos, loadingState);
+    setInitialized,
+    reset: resetInfiniteScroll,
+  } = useInfiniteScroll(appendDataToRepos, setLoading);
 
   useEffect(() => {
-    setLoading(true);
     setDataToRepos(filters, 1).then(() => {
-      setInitializedInFilter(true);
-      setInitializedInIS(true);
+      setInitialized(true);
       setLoading(false);
     });
   }, []);
 
+  const handleFiltersChange = (value, filterType) => {
+    const newFilters = { ...filters, [filterType]: value };
+    setFilters(newFilters);
+
+    if ((filterType === SORT || filterType === DIRECTION) && !repos.length) return;
+
+    setDataToRepos(newFilters, 1);
+    resetInfiniteScroll();
+  };
+
   return (
     <Wrapper>
-      <Filters useFiltersState={[filters, setFilters(repos.length, resetIS)]} />
+      <Filters filters={filters} handleFiltersChange={handleFiltersChange} />
+      {!repos.length && !isLoading
+        && <p>This organization doesn’t have any repositories that match.</p>}
       {repos.map((repo) => <Repo key={repo.id} repo={repo} />)}
       {isLoading && <Spinner />}
     </Wrapper>

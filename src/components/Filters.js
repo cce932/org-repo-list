@@ -29,26 +29,24 @@ const Select = styled.select`
   width: 100px;
 `;
 
-function Filters({ useFiltersState }) {
-  const [filter, setFilters] = useFiltersState;
-
+function Filters({ filters, handleFiltersChange }) {
   const handleTypeChange = (e) => {
-    setFilters(e.target.value, TYPE);
+    handleFiltersChange(e.target.value, TYPE);
   };
 
   const handleSortChange = (e) => {
-    setFilters(e.target.value, SORT);
+    handleFiltersChange(e.target.value, SORT);
   };
 
   const handleDirectionChange = (e) => {
-    setFilters(e.target.value, DIRECTION);
+    handleFiltersChange(e.target.value, DIRECTION);
   };
 
   return (
     <Wrapper>
       <FilterWrapper>
         <label htmlFor="type">Type:</label>
-        <Select id="type" value={filter.type} onChange={handleTypeChange}>
+        <Select id="type" value={filters.type} onChange={handleTypeChange}>
           <option value="all">All</option>
           <option value="public">Public</option>
           <option value="private">Private</option>
@@ -61,7 +59,7 @@ function Filters({ useFiltersState }) {
 
       <FilterWrapper>
         <label htmlFor="sort">Sort:</label>
-        <Select id="sort" value={filter.sort} onChange={handleSortChange}>
+        <Select id="sort" value={filters.sort} onChange={handleSortChange}>
           <option value="created">Created</option>
           <option value="updated">Updated</option>
           <option value="pushed">Pushed</option>
@@ -71,7 +69,7 @@ function Filters({ useFiltersState }) {
 
       <FilterWrapper>
         <label htmlFor="direction">Direction:</label>
-        <Select id="direction" value={filter.direction} onChange={handleDirectionChange}>
+        <Select id="direction" value={filters.direction} onChange={handleDirectionChange}>
           <option value="desc">Desc</option>
           <option value="asc">Asc</option>
         </Select>
@@ -82,7 +80,12 @@ function Filters({ useFiltersState }) {
 
 Filters.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  useFiltersState: PropTypes.array.isRequired,
+  filters: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    sort: PropTypes.string.isRequired,
+    direction: PropTypes.string.isRequired,
+  }).isRequired,
+  handleFiltersChange: PropTypes.func.isRequired,
 };
 
 export default Filters;
