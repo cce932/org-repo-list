@@ -32,10 +32,16 @@ function App() {
     new URLSearchParams({
       ...filtersParam, page,
     })}`)
-    .then((response) => response.json())
-    .catch(() => {
+    .then((response) => {
+      if (response.status === 403) {
+        return Promise.reject(new Error({ msg: `Exceed the github api rate limit now.🤯 Please retry next hour. Ref:${response.body?.documentation_url}` }));
+      }
+
+      return response.json();
+    })
+    .catch(({ msg }) => {
       // eslint-disable-next-line no-alert
-      alert('Data Fetching Error! Please Retry.');
+      alert(msg || 'Data Fetching Error! Please Retry.');
     });
 
   const setDataToRepos = (filtersParam, page) => {
