@@ -9,7 +9,7 @@ import {
 
 const Wrapper = styled.div`
   border: 2px solid ${(prop) => prop.theme.color.secondary};
-  margin: 25px;
+  margin-top: 25px;
   padding: 20px;
 `;
 

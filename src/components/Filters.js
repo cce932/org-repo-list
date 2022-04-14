@@ -7,7 +7,6 @@ const Wrapper = styled.div`
   display: flex;
   border: 2px solid ${(props) => props.theme.color.accent};
   padding: 18px;
-  margin: 25px;
   flex-direction: column;
 
   @media ${(props) => props.theme.device.laptop} {

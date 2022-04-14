@@ -8,6 +8,7 @@ import useInfiniteScroll from './hooks/useInfiniteScroll';
 
 const Wrapper = styled.div`
   margin: auto;
+  padding: 25px;
 
   @media ${(props) => props.theme.device.laptop} {
     width: 80%;
